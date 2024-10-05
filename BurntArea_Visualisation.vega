@@ -1,0 +1,51 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {"text": "Percentage of Forest land damage by State over 2019-20 Summer"},
+    "width": 300,
+    "height": 300,
+    "data": {
+    "url": "https://raw.githubusercontent.com/Bramich04/Fire_Area_Data/refs/heads/main/Forest_Fire_Area.csv"
+    },
+    "params": [
+      {
+        "name": "Forest_selection",
+        "bind": {
+          "input": "select",
+          "options": [
+            null,
+            "Native Forest",
+            "Commercial Plantation",
+            "Other"
+          ],
+          "labels": [
+            "Show All",
+            "Native Forest",
+            "Commercial Plantation",
+            "Other Forest land"
+          ],
+          "name": "Forest-type selection"
+    
+        }
+      }
+    ],
+    
+    "transform": [
+      {"filter": "Forest_selection == null || datum.Area_Type == Forest_selection"}
+    ],
+    
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "State"},
+      "y": {"aggregate": "sum", "field": "Percent_Burnt_Area","title": "Percentage of Forest area burnt"},
+      "color": {"field": "Area_Type","title": "Forest Type"},
+      "tooltip": [
+            {"field": "State", "type": "nominal","title":"State"},
+            {"field": "Area_Type", "type": "nominal","title":"Type of Forest"},
+            {"field": "Percent_Burnt_Area", "type": "quantitative","title":"% of land burnt"}
+      ]
+    
+    }
+    }
+    
+    
+    

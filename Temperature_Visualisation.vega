@@ -1,0 +1,101 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 800,
+    "height": 450,
+    "background":"aliceblue",
+    "title": "Australia Maximum Temperatures 1975-2019",
+    "projection": {"type": "mercator"},
+     "params": [  
+        {  
+          "name": "temperature_above",
+          "value": 0,
+          "bind": {
+            "input": "range",
+            "min": 0,
+            "max": 50,
+            "step": 5,
+            "name": "Min. Temp"
+          }
+        },
+        {
+          "name": "year_selection",
+          "value": 2019,
+          "bind": {
+            "input": "range",
+            "min": 1975,
+            "max": 2019,
+            "step": 1,
+            "name": "Year"
+          }
+        }
+      ],
+  
+    "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Bramich04/Aus-states/refs/heads/main/states.geojson",
+        "format": {"type": "topojson", "feature": "ne_50m_admin_0_countries"}
+      },
+    "mark": {"type": "geoshape", "fill": "dimgrey", "stroke": "white"}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/Bramich04/1-10-Graticules/refs/heads/main/ne_110m_graticules_10.json",
+        "format": {"type":"topojson", "feature": "ne_110m_graticules_10"}
+      },
+    "mark": {"type": "geoshape", "fill": "dimgrey", "stroke": "black"}
+    },
+    {
+      "data": {
+        "url":
+          "https://raw.githubusercontent.com/Bramich04/Max-Temperature/refs/heads/main/AustralianAverageMaxTemp.csv"
+      },
+     
+      "transform": [
+        {"filter": "datum.temperature > temperature_above"},
+        {"filter": "datum.Year == year_selection"}
+      ],
+      "mark": "circle",
+      "encoding": {
+        "longitude": {"field": "longitude", "type":
+        "quantitative"},
+        "latitude": {"field": "latitude", "type":
+        "quantitative"},
+        "color": {
+          "field": "temperature",
+          "type": "quantitative",
+          "title": "Maximum Temperature (C)",
+          "scale": {"scheme": "oranges"}
+          },
+        "size": {
+          "field": "temperature",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "type": "threshold",
+            "domain": [25,30,35,40],
+            "range": [100,400,800,1500,2500]
+          }
+        },
+        "opacity": {
+          "value": 1
+          },
+        "tooltip": [
+          {"field": "name", "type": "ordinal","title":"Location"},
+          {"field": "temperature", "type": "quantitative","title":"Maximum Temperature (C)", "format": ".2f"},
+          {"field": "elevation", "type": "quantitative","title":"Elevation (m)", "format": ".2f"}
+        ]
+      }
+    }
+    ]
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

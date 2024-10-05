@@ -1,0 +1,153 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 500,
+    "height": 400,
+    "title": "Bushfire environmental contributors of 2016",
+    "data": {
+    "url": "https://raw.githubusercontent.com/Bramich04/Rainfall/refs/heads/main/Rainfall%20data.csv"
+    },
+    
+    "params": [
+      {
+      "name": "Date_Show",
+      "value": 42627,
+      "bind": {
+      "input": "range",
+      "min": 42370,
+      "max": 42735,
+      "step": 1,
+      "name": "Date Shown:"
+        }
+      },
+    
+      {
+        "name": "State_Show",
+        "bind": {
+          "input": "select",
+          "options": [
+            null,
+            "Australian Capital Territory",
+            "New South Wales",
+            "Northern Territory",
+            "Queensland",
+            "South Australia",
+            "Tasmania",
+            "Victoria",
+            "Western Australia"
+          ],
+          "labels": [
+            "Show All",
+            "Australian Capital Territory",
+            "New South Wales",
+            "Northern Territory",
+            "Queensland",
+            "South Australia",
+            "Tasmania",
+            "Victoria",
+            "Western Australia"
+          ],
+          "name": "State Selection"
+        }
+      }
+    ],
+    
+    "transform": [
+      {"filter": "datum.DateNumber == Date_Show"},
+      {"filter": "State_Show == null || datum.State == State_Show"}
+    ],
+    
+    
+    "encoding": {
+      "x": {
+      "field": "Rainfall",
+      "type": "quantitative",
+      "title": "Rainfall (mm)"
+      },
+      "y": {
+      "field": "Humidity",
+      "type": "quantitative",
+      "title": "Humidity (g/kg)"
+      }
+    },
+      "layer":[
+    {
+      "mark": "circle",
+      "encoding": {
+      "color": {
+      "field": "State",
+      "type": "nominal"
+      },
+      "size": {
+      "field": "Windspeed",
+      "type": "quantitative",
+      "title": "Wind-speed (km/h)"
+      },
+      "tooltip": [
+            {"field": "State", "type": "nominal","title":"State"},
+            {"field": "Location", "type": "nominal","title":"Location"},
+            {"field": "Date", "type": "nominal","title":"Date"},
+            {"field": "Rainfall", "type": "quantitative","title":"Rainfall (mm)"},
+            {"field": "Humidity", "type": "quantitative","title":"Humidity (g/kg)"},
+            {"field": "Windspeed", "type": "quantitative","title":"Wind Speed (km/h)"}
+      ]
+      }
+    },
+    
+    {
+    "mark": {
+    "type": "text",
+    "align": "center",
+    "baseline": "top",
+    "dx": -110,
+    "dy": 260,
+    "fontSize": 20,
+    "fontStyle": "italic"
+    },
+    "encoding": {
+      "x": {
+        "axis": null
+      },
+      
+      "y": {
+        "axis": null
+      },
+    
+    "text": {"field": "Date", "type": "nominal"},
+    "color": {"value": "black"},
+    "opacity": {
+      "condition": {
+        "test": "datum.DateNumber == Date_Show",
+        "value": 1
+        },
+      "value": 0
+    }
+    }
+    },
+    
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 10,
+        "fontSize": 12,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {"field": "Location", "type": "nominal"},
+        "color": {"value": "grey"},
+        "opacity": {
+          "condition": {
+            "test": "datum['Location'] == 'Melbourne' || datum['Location'] == 'Sydney' || datum['Location'] == 'Brisbane' || datum['Location'] == 'Canberra' || datum['Location'] == 'Perth' || datum['Location'] == 'Adelaide' || datum['Location'] == 'Hobart'",
+            "value": 1
+          },
+          "value": 0
+          }
+        }
+        
+    
+      }
+    ]
+    }
+    
+    
